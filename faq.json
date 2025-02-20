@@ -1,0 +1,14 @@
+[
+  {
+    "question": "Is the API rate-limited?",
+    "answer": "Yes, the free tier is limited to 100 API calls per month. The Donatur tier offers unlimited API calls."
+  },
+  {
+    "question": "Can I self-host the API?",
+    "answer": "Yes! Our API is open-source and available on GitHub. You can self-host it on your own infrastructure."
+  },
+  {
+    "question": "I have another question",
+    "answer": "Shoot me an email at fathin@youremailvalidator.com"
+  }
+]

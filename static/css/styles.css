@@ -1,0 +1,51 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+.bg-gradient {
+  background: linear-gradient(to bottom, #ffffff, #f9fafb);
+}
+
+.text-gradient {
+  background: linear-gradient(to right, #8b5cf6, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn-gradient {
+  background: linear-gradient(to right, #8b5cf6, #ec4899);
+}
+
+.card-hover:hover {
+  box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.1),
+    0 4px 6px -2px rgba(236, 72, 153, 0.05);
+}
+
+.mt-auto a {
+  position: relative;
+  z-index: 999 !important;
+}
+
+#faq details {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+@keyframes pulse-border {
+  0%,
+  100% {
+    border-color: var(--pulse-color, #9a58df);
+    box-shadow: 0 0 15px 10px var(--pulse-color, #9a58df);
+  }
+  50% {
+    border-color: transparent;
+    box-shadow: 0 0 30px 10px transparent;
+  }
+}
+
+.pulse-border-animation {
+  border: 2px solid var(--pulse-color, #9a58df);
+  border-radius: 9999px;
+  animation: pulse-border var(--duration, 1.5s) infinite;
+}

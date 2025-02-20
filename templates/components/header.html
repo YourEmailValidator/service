@@ -1,0 +1,126 @@
+<header x-data="{ mobileMenu: false }" class="px-4 lg:px-6 h-14 flex items-center backdrop-filter backdrop-blur-sm bg-white bg-opacity-50 sticky top-0 z-50">
+    <a href="{{ url_for('home') }}" class="flex items-center justify-center">
+        <i class="h-6 w-6 text-purple-500"></i>
+        <span class="ml-2 text-lg font-bold">YourEmailValidator</span>
+    </a>
+
+    <!-- Mobile menu button -->
+    <button 
+        @click="mobileMenu = !mobileMenu" 
+        class="ml-auto md:hidden flex items-center p-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path x-show="!mobileMenu" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            <path x-show="mobileMenu" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    </button>
+
+    <!-- Desktop Navigation -->
+    <nav class="ml-auto hidden md:flex items-center gap-4 sm:gap-6">
+        <a href="#features" class="text-sm font-medium hover:text-purple-500 transition-colors">Features</a>
+        <a href="#pricing" class="text-sm font-medium hover:text-purple-500 transition-colors">Pricing</a>
+        <a href="#faq" class="text-sm font-medium hover:text-purple-500 transition-colors">FAQ</a>
+        <a href="/docs-api" class="text-sm font-medium hover:text-purple-500 transition-colors">Documentation</a>
+        
+        {% if current_user is not none %}
+            <div class="relative" x-data="{ open: false }">
+                <button @click="open = !open" class="flex items-center gap-2 text-sm font-medium hover:text-purple-500 transition-colors">
+                    <span>{{ current_user.username }}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                
+                <div x-show="open" 
+                     @click.away="open = false"
+                     class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                    <div class="py-1">
+                        <a href="{{ url_for('dashboard') }}" 
+                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            Dashboard
+                        </a>
+                        <a href="{{ url_for('change_password') }}" 
+                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            Change Password
+                        </a>
+                        <form action="{{ url_for('logout') }}" method="post" class="block">
+                            <button type="submit" 
+                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="flex items-center gap-2">
+                <a href="{{ url_for('login') }}" 
+                   class="text-sm font-medium px-4 py-2 text-purple-600 hover:text-purple-500 transition-colors">
+                    Log in
+                </a>
+                <a href="{{ url_for('register') }}" 
+                   class="text-sm font-medium px-4 py-2 text-white bg-purple-600 hover:bg-purple-500 transition-colors rounded-full">
+                    Sign up
+                </a>
+            </div>
+        {% endif %}
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div x-show="mobileMenu" 
+         @click.away="mobileMenu = false"
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="transition ease-in duration-150"
+         x-transition:leave-start="opacity-100 scale-100"
+         x-transition:leave-end="opacity-0 scale-95"
+         class="absolute inset-x-0 top-14 bg-white shadow-lg rounded-b-lg md:hidden">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+            <a href="#features" 
+               @click="mobileMenu = false"
+               class="block px-3 py-2 text-base font-medium hover:text-purple-500 transition-colors">Features</a>
+            <a href="#pricing" 
+               @click="mobileMenu = false"
+               class="block px-3 py-2 text-base font-medium hover:text-purple-500 transition-colors">Pricing</a>
+            <a href="#faq" 
+               @click="mobileMenu = false"
+               class="block px-3 py-2 text-base font-medium hover:text-purple-500 transition-colors">FAQ</a>
+            <a href="/docs-api" 
+               @click="mobileMenu = false"
+               class="block px-3 py-2 text-base font-medium hover:text-purple-500 transition-colors">Documentation</a>
+            
+            {% if current_user is not none %}
+                <a href="{{ url_for('dashboard') }}" 
+                   @click="mobileMenu = false"
+                   class="block px-3 py-2 text-base font-medium hover:text-purple-500 transition-colors">
+                    Dashboard
+                </a>
+                <a href="{{ url_for('change_password') }}" 
+                   @click="mobileMenu = false"
+                   class="block px-3 py-2 text-base font-medium hover:text-purple-500 transition-colors">
+                    Change Password
+                </a>
+                <form action="{{ url_for('logout') }}" method="post">
+                    <button type="submit" 
+                            @click="mobileMenu = false"
+                            class="w-full text-left px-3 py-2 text-base font-medium hover:text-purple-500 transition-colors">
+                        Logout
+                    </button>
+                </form>
+            {% else %}
+                <div class="px-3 py-2 space-y-2">
+                    <a href="{{ url_for('login') }}" 
+                       @click="mobileMenu = false"
+                       class="block text-center px-4 py-2 text-purple-600 hover:text-purple-500 transition-colors">
+                        Log in
+                    </a>
+                    <a href="{{ url_for('register') }}" 
+                       @click="mobileMenu = false"
+                       class="block text-center px-4 py-2 text-white bg-purple-600 hover:bg-purple-500 transition-colors rounded-full">
+                        Sign up
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</header>

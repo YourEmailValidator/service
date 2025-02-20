@@ -1,0 +1,15 @@
+{% from 'macros/cards.html' import feature_card %}
+<section id="features" class="w-full py-12 md:py-24 lg:py-32">
+  <div class="container px-4 md:px-6 mx-auto">
+    <div class="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+      <h2 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Experience improved <span class="text-gradient">validation</span></h2>
+      <p class="max-w-[600px] text-gray-500 md:text-xl/relaxed">Powerful features to make your email validation process seamless and efficient</p>
+    </div>
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">{{ feature_card('Real-time Validation', 'Instant validation results with detailed response codes', 'zap') }}
+      {{ feature_card('Bulk Validation', 'Process multiple email addresses in a single API call', 'database') }}
+      {{ feature_card('Advanced Deliverability', 'Check SPF, DKIM, and DMARC for comprehensive email deliverability', 'shield-check') }}
+      {{ feature_card('Custom Rules', 'Create custom validation rules to fit your needs', 'settings') }}
+      {{ feature_card('API Call Tracking', 'Monitor and track your API usage for efficient management', 'activity') }}
+      {{ feature_card('Open Source', 'Self-host our solution or contribute to the codebase', 'shield') }}</div>
+  </div>
+</section>

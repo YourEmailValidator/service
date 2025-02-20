@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  API Documentation - YourEmailValidator
+{% endblock %}
+
+{% block extra_head %}
+  <link href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@3.52.5/swagger-ui.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@3.52.5/swagger-ui-bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@3.52.5/swagger-ui-standalone-preset.js"></script>
+{% endblock %}
+
+{% block extra_css %}
+  <style>
+    .url {
+      display: none !important;
+    }
+    .models.is-open {
+      display: none !important;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="container mx-auto px-4 py-8">
+    <div id="swagger-ui"></div>
+    <script>
+      const ui = SwaggerUIBundle({
+        url: '/openapi.json',
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [SwaggerUIBundle.presets.apis, SwaggerUIBundle.presets.history],
+        layout: 'BaseLayout'
+      })
+    </script>
+  </div>
+{% endblock %}

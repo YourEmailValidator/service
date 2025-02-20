@@ -1,0 +1,56 @@
+{% macro feature_card(title, description, icon) %}
+<div class="relative overflow-hidden group bg-white p-6 rounded-lg shadow-md card-hover">
+    <div
+        class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+    </div>
+    <i data-lucide="{{ icon }}" class="w-10 h-10 text-purple-500 mb-4"></i>
+    <h3 class="text-xl font-semibold mb-2">{{ title }}</h3>
+    <p class="text-gray-500">{{ description }}</p>
+</div>
+{% endmacro %}
+
+{% macro pricing_card(tier, price, description, features, register_url, login_url, button_text, button_class,
+popular=False, gradient=False) %}
+<div
+    class="relative group bg-white p-6 rounded-lg shadow-md card-hover min-h-[200px] flex flex-col justify-between {% if gradient %}border-2 border-purple-500{% endif %}">
+    <div
+        class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg pointer-events-none">
+    </div>
+    <!-- Top Section with Tier, Price, and Description -->
+    <div class="mb-4">
+        <h3 class="text-2xl font-semibold mb-2 flex items-center gap-2">
+            {{ tier }}
+            {% if popular %}
+            <span class="inline-block px-3 py-1 text-xs bg-purple-100 text-purple-500 rounded-full">Popular</span>
+            {% endif %}
+        </h3>
+        <div class="text-5xl font-bold {% if gradient %}text-gradient{% endif %}">{{ price }}</div>
+        <p class="text-gray-500 mt-2">{{ description }}</p>
+    </div>
+    <!-- Feature List -->
+    <div class="flex-grow">
+        <ul class="space-y-3">
+            {% for feature in features %}
+            <li class="flex items-center gap-3">
+                <i data-lucide="check" class="w-5 h-5 flex-shrink-0 text-purple-500"></i>
+                <span>{{ feature }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!-- Button Section -->
+    <div class="mt-6">
+        {% if gradient %}
+        <a href="{% if login_url %} {{ login_url }} {% else %} {{ register_url }} {% endif %}"
+            class="block w-full py-3 px-4 text-center btn-gradient rounded-full font-medium relative">
+            {{ button_text }}
+        </a>
+        {% else %}
+        <a href="{{ register_url }}"
+            class="block w-full py-3 px-4 border-2 text-center rounded-full font-medium relative">
+            {{ button_text }}
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endmacro %}
