@@ -1,0 +1,126 @@
+<section class="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+  <div class="relative overflow-hidden bg-white min-h-[600px] flex items-center">
+    <div class="container mx-auto px-4 md:px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-[1.5fr_1.2fr] gap-2 items-center">
+        <!-- Left Column - Content -->
+        <div class="flex flex-col space-y-6">
+          <!-- Social Proof Kicker -->
+          <div class="flex items-center gap-2 text-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-purple-600" viewBox="0 0 20 20"
+              fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd" />
+            </svg>
+            <span class="font-medium">
+              Over 1 million emails validated today
+            </span>
+          </div>
+
+          <!-- Main Headline -->
+          <div class="space-y-2">
+            <h1 class="text-4xl font-bold tracking-tighter sm:text-5xl">
+              Validate Emails in
+              <span class="bg-clip-text text-purple-600">
+                Real-Time
+              </span>
+            </h1>
+            <p class="text-2xl md:text-3xl font-semibold tracking-tighter text-gray-800">
+              Improve Deliverability. Boost ROI.
+            </p>
+          </div>
+
+          <!-- Clear Explanation -->
+          <p class="text-lg md:text-xl text-gray-600 max-w-[600px]">
+            Say goodbye to email bounces, fake addresses, and lost revenue.
+            With YourEmailValidator, ensure every email you collect is valid
+            and active — instantly.
+          </p>
+
+          <!-- CTAs with Friction Removal -->
+          <div class="flex flex-col sm:flex-row gap-4 pt-4">
+            <!-- <a href="#"
+                            class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200">
+                            See how it works
+                        </a> -->
+
+            <a href=" {% if current_user %} {{ url_for('dashboard') }} {% else %} {{ url_for('register') }} {% endif %}"
+              class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700">
+              {% if current_user %} Go to Dashboard {% else %} Get Started for Free {% endif %}
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                  clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+
+          <!-- Usefulness Proof -->
+          <div class="pt-8 border-t space-y-4">
+            <div class="flex gap-4 items-center">
+              <div class="flex -space-x-2">
+                <div class="h-8 w-8 rounded-full border-2 border-white bg-gray-200"><img
+                    src="https://www.tinapyp.com/static/images/picofme.png" class="rounded-full" alt="">
+                </div>
+                <div class="h-8 w-8 rounded-full border-2 border-white bg-gray-200"><img
+                    src="https://avatars.githubusercontent.com/u/74520695?s=48&v=4" class="rounded-full" alt=""></div>
+                <div class="h-8 w-8 rounded-full border-2 border-white bg-gray-200"><img
+                    src="https://avatars.githubusercontent.com/u/42701951?s=48&v=4" class="rounded-full" alt="">
+                </div>
+                <div class="h-8 w-8 rounded-full border-2 border-white bg-black flex items-center justify-center">
+                  <p class="text-sm font-base text-white">1k+</p>
+                </div>
+
+              </div>
+              <p class="text-sm text-gray-600">
+                Used by people worldwide
+              </p>
+            </div>
+            <!-- Validation Stats -->
+            <div class="flex gap-4 text-sm">
+              <div>
+                <div class="font-bold">99.9%</div>
+                <div class="text-gray-600">Accuracy rate</div>
+              </div>
+              <div class="w-px bg-gray-200"></div>
+              <div>
+                <div class="font-bold">&lt;50ms</div>
+                <div class="text-gray-600">Response time</div>
+              </div>
+              <!-- <div class="w-px bg-gray-200"></div>
+                            <div>
+                                <div class="font-bold">24/7</div>
+                                <div class="text-gray-600">Support</div>
+                            </div> -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column - Image with Emotional Connection -->
+        <div class="relative lg:h-[600px] hidden lg:block">
+          <div class="relative h-full w-full">
+            <img src="{{ url_for('static', path='/images/hero.png') }}" alt="Email validation dashboard interface"
+              class="object-contain rounded-lg w-full h-full">
+            <div class="absolute top-1/4 right-0 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-lg">
+              <div class="flex items-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd" />
+                </svg>
+                <span class="text-sm font-medium">Valid Email Detected</span>
+              </div>
+            </div>
+            <!-- <div class="absolute bottom-1/4 left-0 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-lg">
+                            <div class="flex items-center gap-3">
+                                <div class="h-2 w-2 rounded-full bg-green-500"></div>
+                                <span class="text-sm font-medium">Real-time Validation</span>
+                            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>

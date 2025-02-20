@@ -1,0 +1,26 @@
+[project]
+name = "emailvalidator-ui"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "cryptography>=43.0.3",
+    "fastapi>=0.115.5",
+    "jinja2>=3.1.4",
+    "mysql-connector-python>=9.1.0",
+    "passlib[bcrypt]>=1.7.4",
+    "pydantic[email]>=2.9.2",
+    "pydantic-settings>=2.6.1",
+    "python-dotenv>=1.0.1",
+    "python-jose[cryptography]>=3.3.0",
+    "python-multipart>=0.0.17",
+    "sqlalchemy>=2.0.36",
+    "uvicorn>=0.32.0",
+    "requests>=2.32.3",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
+]

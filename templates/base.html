@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="title" content="YourEmailValidator | Real-Time Email Validation API for Better Deliverability">
+  <meta name="description"
+    content="Validate emails instantly with YourEmailValidator. Reduce bounces, improve sender reputation, and maximize ROI with our secure API. Try for free!">
+  <meta name="keywords"
+    content="email validation, email validator API, real-time email validation, reduce bounce rates, email deliverability, email marketing optimization">
+  <meta name="robots" content="index, follow">
+  <title>YourEmailValidator | Real-Time Email Validation API for Better Deliverability</title>
+
+  <!-- Open Graph Tags -->
+  <meta property="og:title" content="YourEmailValidator | Real-Time Email Validation API for Better Deliverability">
+  <meta property="og:description"
+    content="Ensure every email address is valid with YourEmailValidator. Improve deliverability and sender reputation with our real-time email validation API.">
+  <meta property="og:image" content="{{ url_for('static', path='/images/thumbnail.png') }}" />
+  <meta property="og:url" content="https://youremailvalidator.com" />
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="YourEmailValidator | Real-Time Email Validation API for Better Deliverability">
+  <meta name="twitter:description"
+    content="Validate emails in real-time with YourEmailValidator. Reduce bounces and boost marketing performance.">
+  <meta name="twitter:image" content="{{ url_for('static', path='/images/thumbnail.png') }}">
+
+  <!-- Canonical Link -->
+  <link rel="canonical" href="https://youremailvalidator.com" />
+  <title>
+    {% block title %}
+    YourEmailValidator | Real-Time Email Validation API for Better Deliverability
+    {% endblock %}
+  </title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="shortcut icon" href="{{ url_for('static', path='/images/favicon.ico') }}" type="image/x-icon" />
+  <link rel="manifest" href="{{ url_for('static', path='/images/site.webmanifest') }}" />
+  <link href="{{ url_for('static', path='/css/styles.css') }}" rel="stylesheet" />
+  <script src="//unpkg.com/alpinejs" defer></script>
+  {% block extra_head %}
+
+  {% endblock %}
+  {% block extra_css %}
+
+  {% endblock %}
+</head>
+
+<body class="bg-gradient min-h-screen flex flex-col">
+  {% include 'components/header.html' %}
+
+  <main class="flex-1">
+    {% block content %}
+
+    {% endblock %}
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="{{ url_for('static', path='/js/main.js') }}"></script>
+  {% block extra_js %}
+
+  {% endblock %}
+  <script>
+    lucide.createIcons()
+  </script>
+</body>
+
+</html>

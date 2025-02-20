@@ -1,0 +1,278 @@
+{# templates/pages/dashboard.html #}
+{% extends 'base.html' %}
+
+{% block title %}
+  Dashboard - YourEmailValidator
+{% endblock %}
+
+{% block content %}
+  <div class="min-h-screen bg-gray-50">
+    <!-- Main content -->
+    <main class="py-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Welcome section -->
+        <div class="md:flex md:items-center md:justify-between">
+          <div class="flex-1 min-w-0">
+            <h1 class="text-3xl font-bold leading-tight text-gray-900">Welcome back, {{ current_user.username }}!</h1>
+            <p class="mt-1 text-sm text-gray-500">Manage your API keys and monitor your usage</p>
+          </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <!-- Account Status -->
+          <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+              <dt class="text-sm font-medium text-gray-500 truncate">Account Status</dt>
+              <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ current_user.status }}</dd>
+              {% if current_user.status == 'FREE' %}
+                <div class="mt-4">
+                  <div class="relative pt-1">
+                    <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-purple-200">
+                      {% set usage_percent = usage_stats.total_calls / 100 * 100 %}
+                      <div style="width:{{ usage_percent }}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-500"></div>
+                    </div>
+                  </div>
+                  <p class="text-sm text-gray-600">{{ usage_stats.total_calls }}/100 API calls this month</p>
+                  <a href="https://sociabuzz.com/youremailvalidator/donate" class="mt-4"><button type="submit" id="upgrade-to-donatur" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">Upgrade to Donatur</button></a>
+                </div>
+              {% else %}
+                <p class="mt-2 text-sm text-gray-600">Unlimited API access</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Total API Calls -->
+          <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+              <dt class="text-sm font-medium text-gray-500 truncate">Total API Calls</dt>
+              <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ usage_stats.total_calls|default(0) }}</dd>
+            </div>
+          </div>
+
+          <!-- Success Rate -->
+          <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+              <dt class="text-sm font-medium text-gray-500 truncate">Success Rate</dt>
+              <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ '%.1f'|format(usage_stats.success_rate|default(0)) }}%</dd>
+            </div>
+          </div>
+
+          <!-- Active API Keys -->
+          <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+              <dt class="text-sm font-medium text-gray-500 truncate">Active API Keys</dt>
+              <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ api_keys|length }}</dd>
+            </div>
+          </div>
+        </div>
+
+        <!-- API Keys Section -->
+        <div class="mt-8">
+          <div class="sm:flex sm:items-center">
+            <div class="sm:flex-auto">
+              <h2 class="text-xl font-semibold text-gray-900">API Keys</h2>
+              <p class="mt-2 text-sm text-gray-700">Create and manage your API keys. Keys are active until deleted.</p>
+            </div>
+            <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+              <button type="button" onclick="openCreateKeyModal()" class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">Create new key</button>
+            </div>
+          </div>
+
+          <!-- API Keys Table -->
+          <div class="mt-8 flex flex-col">
+            <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+              <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                  <table class="min-w-full divide-y divide-gray-300">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Name</th>
+                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">API Key</th>
+                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Created</th>
+                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Usage</th>
+                        <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                          <span class="sr-only">Actions</span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                      {% for key in api_keys %}
+                        <tr>
+                          <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-900">{{ key.name }}</td>
+                          <td class="whitespace-nowrap px-3 py-4 text-sm">
+                            <div class="flex items-center">
+                              <code class="text-sm text-purple-600 bg-purple-50 px-2 py-1 rounded">{{ key.key[:8] }}...</code>
+                              <button onclick="copyToClipboard('{{ key.key }}')" class="ml-2 text-gray-400 hover:text-gray-600">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                </svg>
+                              </button>
+                            </div>
+                          </td>
+                          <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ key.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                          <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ key.usage_count|default(0) }} calls</td>
+                          <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                            <button onclick="deleteApiKey('{{ key.id }}')" class="text-red-600 hover:text-red-900">Delete</button>
+                          </td>
+                        </tr>
+                      {% else %}
+                        <tr>
+                          <td colspan="5" class="px-3 py-4 text-sm text-gray-500 text-center">No API keys yet. Create one to get started!</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Usage History -->
+        <div class="mt-8">
+          <h2 class="text-xl font-semibold text-gray-900">Usage History</h2>
+          <div class="mt-4 bg-white shadow rounded-lg p-6">
+            <canvas id="usageChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Create API Key Modal -->
+    <div id="createKeyModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 hidden" aria-hidden="true">
+      <div class="fixed inset-0 overflow-y-auto">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+            <form id="createKeyForm" onsubmit="createApiKey(event)">
+              <div>
+                <div class="mt-3 text-center sm:mt-5">
+                  <h3 class="text-lg font-medium leading-6 text-gray-900">Create New API Key</h3>
+                  <div class="mt-4">
+                    <label for="keyName" class="block text-sm font-medium text-gray-700">Key Name</label>
+                    <input type="text" name="name" id="keyName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm" placeholder="e.g., Production API Key" />
+                  </div>
+                </div>
+              </div>
+              <div class="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
+                <button type="submit" class="inline-flex w-full justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 sm:col-start-2 sm:text-sm">Create</button>
+                <button type="button" onclick="closeCreateKeyModal()" class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 sm:col-start-1 sm:mt-0 sm:text-sm">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if request.query_params.get('password') == 'changed' %}
+    <div class="rounded-md bg-green-50 p-4 mb-4">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm font-medium text-green-800">Your password has been changed successfully.</p>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+const ctx = document.getElementById('usageChart').getContext('2d');
+const usageChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{ usage_stats.dates|tojson }},
+        datasets: [{
+          label: 'API Calls',
+          data: {{ usage_stats.calls|tojson }},
+          borderColor: 'rgb(139, 92, 246)',
+          tension: 0.1,
+          fill: true,
+          backgroundColor: 'rgba(139, 92, 246, 0.1)'
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        },
+        plugins: {
+          legend: {
+              display: false
+          }
+      }
+    }
+});
+
+// Modal functions
+function openCreateKeyModal() {
+    document.getElementById('createKeyModal').classList.remove('hidden');
+}
+
+function closeCreateKeyModal() {
+    document.getElementById('createKeyModal').classList.add('hidden');
+}
+
+// API Key management
+async function createApiKey(event) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+
+    try {
+        const response = await fetch('/api/keys', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(Object.fromEntries(formData))
+        });
+
+        if (!response.ok) throw new Error('Failed to create API key');
+
+        window.location.reload();
+    } catch (error) {
+        alert('Error creating API key: ' + error.message);
+    }
+}
+
+async function deleteApiKey(keyId) {
+    if (!confirm('Are you sure you want to delete this API key? This action cannot be undone.')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/keys/${keyId}`, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) throw new Error('Failed to delete API key');
+
+        window.location.reload();
+    } catch (error) {
+        alert('Error deleting API key: ' + error.message);
+    }
+}
+
+// Utility functions
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        alert('API key copied to clipboard!');
+    }).catch(err => {
+        console.error('Failed to copy text: ', err);
+    });
+}
+</script>
+{% endblock %}

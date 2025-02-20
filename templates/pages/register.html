@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Register - YourEmailValidator
+{% endblock %}
+
+{% block extra_css %}
+  <style>
+    .error-message {
+      display: none;
+      color: #dc2626;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+    .success-message {
+      display: none;
+    }
+    .loading {
+      display: none;
+    }
+    .password-strength {
+      height: 4px;
+      transition: all 0.3s ease;
+    }
+    .password-strength-text {
+      font-size: 0.75rem;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="min-h-screen flex flex-col items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
+      <!-- Header -->
+      <div>
+        <h2 class="mt-2 text-center text-3xl font-extrabold text-gray-900">Create your account</h2>
+        <p class="mt-2 text-center text-sm text-gray-600">
+          Or
+          <a href="/login" class="font-medium text-purple-600 hover:text-purple-500">sign in to your existing account</a>
+        </p>
+      </div>
+
+      <!-- Registration Form -->
+      <form id="registerForm" class="mt-8 space-y-6">
+        <!-- Username Field -->
+        <div>
+          <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+          <div class="mt-1">
+            <input id="username" name="username" type="text" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm" placeholder="Choose a username" />
+            <p class="error-message" id="username-error"></p>
+          </div>
+        </div>
+
+        <!-- Email Field -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
+          <div class="mt-1">
+            <input id="email" name="email" type="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm" placeholder="you@example.com" />
+            <p class="error-message" id="email-error"></p>
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+          <div class="mt-1">
+            <input id="password" name="password" type="password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm" placeholder="Create a strong password" />
+            <div class="mt-2">
+              <div class="password-strength w-full bg-gray-200 rounded-full">
+                <div id="strength-bar" class="password-strength h-1 rounded-full bg-red-500" style="width: 0%"></div>
+              </div>
+              <p class="password-strength-text mt-1 text-gray-500" id="password-strength-text">Password strength: Too weak</p>
+            </div>
+            <p class="error-message" id="password-error"></p>
+          </div>
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div>
+          <label for="confirm-password" class="block text-sm font-medium text-gray-700">Confirm password</label>
+          <div class="mt-1">
+            <input id="confirm-password" name="confirm-password" type="password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm" placeholder="Confirm your password" />
+            <p class="error-message" id="confirm-password-error"></p>
+          </div>
+        </div>
+
+        <!-- Terms and Conditions -->
+        <div class="flex items-center">
+          <input id="terms" name="terms" type="checkbox" required class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded" />
+          <label for="terms" class="ml-2 block text-sm text-gray-900">
+            I agree to the
+            <a href="#" class="text-purple-600 hover:text-purple-500">Terms of Service</a>
+            and
+            <a href="#" class="text-purple-600 hover:text-purple-500">Privacy Policy</a>
+          </label>
+        </div>
+
+        <!-- Submit Button -->
+        <div>
+          <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+            <svg id="loading-spinner" class="loading animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>Create account
+          </button>
+        </div>
+      </form>
+
+      <!-- Success Message -->
+      <div id="success-message" class="success-message rounded-md bg-green-50 p-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm font-medium text-green-800">Registration successful! Redirecting to login...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('registerForm')
+      const passwordInput = document.getElementById('password')
+      const confirmPasswordInput = document.getElementById('confirm-password')
+      const strengthBar = document.getElementById('strength-bar')
+      const strengthText = document.getElementById('password-strength-text')
+      const loadingSpinner = document.getElementById('loading-spinner')
+      const successMessage = document.getElementById('success-message')
+    
+      // Password strength checker
+      function checkPasswordStrength(password) {
+        let strength = 0
+        const patterns = {
+          length: password.length >= 8,
+          lowercase: /[a-z]/.test(password),
+          uppercase: /[A-Z]/.test(password),
+          numbers: /\d/.test(password),
+          symbols: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+        }
+    
+        strength += patterns.length ? 1 : 0
+        strength += patterns.lowercase ? 1 : 0
+        strength += patterns.uppercase ? 1 : 0
+        strength += patterns.numbers ? 1 : 0
+        strength += patterns.symbols ? 1 : 0
+    
+        return {
+          score: strength,
+          patterns: patterns
+        }
+      }
+    
+      passwordInput.addEventListener('input', function () {
+        const result = checkPasswordStrength(this.value)
+        const percentage = (result.score / 5) * 100
+    
+        strengthBar.style.width = `${percentage}%`
+    
+        if (result.score <= 1) {
+          strengthBar.className = 'password-strength h-1 rounded-full bg-red-500'
+          strengthText.textContent = 'Password strength: Too weak'
+        } else if (result.score <= 2) {
+          strengthBar.className = 'password-strength h-1 rounded-full bg-orange-500'
+          strengthText.textContent = 'Password strength: Weak'
+        } else if (result.score <= 3) {
+          strengthBar.className = 'password-strength h-1 rounded-full bg-yellow-500'
+          strengthText.textContent = 'Password strength: Medium'
+        } else if (result.score <= 4) {
+          strengthBar.className = 'password-strength h-1 rounded-full bg-green-500'
+          strengthText.textContent = 'Password strength: Strong'
+        } else {
+          strengthBar.className = 'password-strength h-1 rounded-full bg-green-600'
+          strengthText.textContent = 'Password strength: Very strong'
+        }
+      })
+    
+      // Form submission
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault()
+    
+        // Reset error messages
+        document.querySelectorAll('.error-message').forEach((el) => {
+          el.style.display = 'none'
+          el.textContent = ''
+        })
+    
+        // Validate passwords match
+        if (passwordInput.value !== confirmPasswordInput.value) {
+          document.getElementById('confirm-password-error').textContent = 'Passwords do not match'
+          document.getElementById('confirm-password-error').style.display = 'block'
+          return
+        }
+    
+        // Show loading state
+        loadingSpinner.style.display = 'block'
+    
+        try {
+          const response = await fetch('/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              username: document.getElementById('username').value,
+              email: document.getElementById('email').value,
+              password: passwordInput.value
+            })
+          })
+    
+          const data = await response.json()
+    
+          if (!response.ok) {
+            throw new Error(data.detail || 'Registration failed')
+          }
+    
+          // Show success message
+          form.style.display = 'none'
+          successMessage.style.display = 'block'
+    
+          // Redirect to login page after 2 seconds
+          setTimeout(() => {
+            window.location.href = '/login'
+          }, 2000)
+        } catch (error) {
+          // Handle specific error messages
+          if (error.message.includes('Username')) {
+            document.getElementById('username-error').textContent = error.message
+            document.getElementById('username-error').style.display = 'block'
+          } else if (error.message.includes('Email')) {
+            document.getElementById('email-error').textContent = error.message
+            document.getElementById('email-error').style.display = 'block'
+          } else {
+            // General error
+            const errorDiv = document.createElement('div')
+            errorDiv.className = 'mt-4 p-4 bg-red-50 text-red-700 rounded-md'
+            errorDiv.textContent = error.message
+            form.appendChild(errorDiv)
+          }
+        } finally {
+          loadingSpinner.style.display = 'none'
+        }
+      })
+    })
+  </script>
+{% endblock %}
